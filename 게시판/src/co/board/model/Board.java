@@ -6,7 +6,7 @@ public class Board {
 	private String b_content;
 	private String b_user;
 	private int b_parent_id;
-	
+
 	public int getB_id() {
 		return b_id;
 	}

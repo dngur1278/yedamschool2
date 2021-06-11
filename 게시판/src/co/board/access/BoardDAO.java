@@ -54,7 +54,7 @@ public class BoardDAO implements BoardAccess {
 			psmt.setString(3, user);
 
 			int result = psmt.executeUpdate();
-			System.out.println("작성이 완료 되었습니다.");
+			System.out.println(result + "건 작성이 완료 되었습니다.");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -64,13 +64,14 @@ public class BoardDAO implements BoardAccess {
 	}
 
 	// 글 수정
-	public void update(int id, String content) {
+	public void update(int id, String content, String b_user) {
 		connect();
-		sql = "update board set b_content = ? where b_id = ?";
+		sql = "update board set b_content = ? where b_id = ? amd b_user = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, content);
 			psmt.setInt(2, id);
+			psmt.setString(3, b_user);
 
 			int result = psmt.executeUpdate();
 			if (result != 0) {
@@ -86,12 +87,13 @@ public class BoardDAO implements BoardAccess {
 	}
 
 	// 글 삭제
-	public void delete(int id) {
+	public void delete(int id, String b_user) {
 		connect();
-		sql = "delete from board where b_id = ?";
+		sql = "delete from board where b_id = ? and b_user = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, id);
+			psmt.setString(2, b_user);
 
 			int result = psmt.executeUpdate();
 		} catch (SQLException e) {
@@ -129,27 +131,16 @@ public class BoardDAO implements BoardAccess {
 	}
 
 	// 댓글 등록
-	public Board comment(int id) {
+	public Board commentInsert(int id, String content, String user) {
 		connect();
-		sql = "select b_parent_id from board where b_id=?";
+		sql = "insert into board (b_title, b_content, b_user, b_parent_id) values('댓글',?,?,?)";
 		Board board = null;
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, id);
-
-			rs = psmt.executeQuery();
-			if (rs.next()) {
-				board = new Board();
-				board.setB_parent_id(rs.getInt("b_parent_id"));
-				if (String.valueOf(board.getB_parent_id()) != null) {
-					System.out.println("댓글이 등록 되어있습니다.");
-				} else {
-					System.out.print("댓글 등록>>");
-					String comm = scanner.nextLine();
-					int a = board.getB_id();
-					board.setB_parent_id(a);
-				}
-			}
+			psmt.setString(1, content);
+			psmt.setString(2, user);
+			psmt.setInt(3, id);
+			int r  = psmt.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -158,7 +149,33 @@ public class BoardDAO implements BoardAccess {
 		}
 		return board;
 	}
-
+	
+	//로그인 
+	public boolean loginMember(String id, String pass) {
+		boolean result = false;
+		connect();
+		sql = "select * from member where u_id=? and u_pass=?";
+		
+		try {
+			psmt= conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, pass);
+			rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				result = true;
+			} else {
+				result = false;
+			} 
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return result;
+	}
+	
 	public static void connect() {
 		String url = "jdbc:sqlite:C:/sqlite/db/sample.db";
 		try {
