@@ -1,6 +1,7 @@
 package game.tetris.view;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,6 +20,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.dao.RankDao;
 import game.tetris.constant.Constant;
 import game.tetris.controller.TetrisManager;
 import game.tetris.util.TetrisUtil;
@@ -35,7 +37,7 @@ public class TetrisView extends JFrame{
 	private int mDirection;
 	private Constant.GameStatus mGameStatus;
 	private boolean mIsKeyPressed;
-	private TextField textField = new TextField(10);
+	RankDao rankDao = new RankDao();
 	
 	public TetrisView(int initialSpeedLevel) {
 		mInitialSpeedLevel = initialSpeedLevel;
@@ -79,13 +81,20 @@ public class TetrisView extends JFrame{
 	}
 	
 	public void end() {
+		int speed_level = mTetrisManager.getSpeedLevel();
+		int delete_line_count = mTetrisManager.getDeletedLineCount();
+		int score = mTetrisManager.getmScore();
 		mGameStatus = Constant.GameStatus.END;
 		mSoundClip.stop();
-		JOptionPane.showMessageDialog(null, "               level : "
-				+ mTetrisManager.getSpeedLevel() + "          deleted lines : "
-				+ mTetrisManager.getDeletedLineCount() +"\n               score: "
-				+ mTetrisManager.getmScore() +"\n               name: "
-				+ textField, "TETRIS - END", JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, "               level : " + speed_level 
+				+ "          deleted lines : " + delete_line_count 
+			    +"\n               score: " + score 
+				, "TETRIS - END", JOptionPane.PLAIN_MESSAGE);
+		
+		String name = (String) JOptionPane.showInputDialog(this, "name", "랭킹등록", JOptionPane.PLAIN_MESSAGE);
+		System.out.println(name);
+		
+		rankDao.insertRank(name, score);
 		
 		dispose();
 	}
@@ -208,5 +217,4 @@ public class TetrisView extends JFrame{
 	public long getDownMilliSecond() {
 		return mTetrisManager.getDownMilliSecond();
 	}
-
 }

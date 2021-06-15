@@ -43,7 +43,7 @@ public class RankDao {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, name);
 			psmt.setInt(2, score);
-			psmt.executeLargeUpdate();
+			psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
