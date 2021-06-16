@@ -106,7 +106,7 @@ public class Block {
 		mNext = src.getNext();
 		mDirection = src.getDirection();
 	}
-
+	// 키보드로 블록 움직이는 move 메서드
 	public void move(int direction) {
 		switch (direction) {
 		case Constant.Direction.LEFT:
@@ -123,7 +123,8 @@ public class Block {
 			break;
 		}
 	}
-
+	//  Graphics의 drawString으로 블록 그리기
+	//  다음에 게임화면에 나타날 블록을 보여준다
 	public void printNext(Graphics graphics, int x, int y) {
 		graphics.drawString("Next block : ", x, y);
 		y += 50;

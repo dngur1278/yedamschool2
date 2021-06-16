@@ -112,7 +112,7 @@ public class TetrisManager {
 			changeBoardByDirection(Constant.Direction.DOWN);
 		}
 	}
-
+	// 라인이 삭제되고 속도 증가 메서드
 	public void processDeletingLines() {
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 		searchLineIndexesToDelete(indexes);
@@ -154,7 +154,7 @@ public class TetrisManager {
 			e.printStackTrace();
 		}
 	}
-
+	// 게임 실해 될때 화면의 전체적인 구성
 	public void print(Graphics graphics) {
 		int x;
 		int y = 56;
@@ -281,7 +281,8 @@ public class TetrisManager {
 			mBoard[x][y] = status;
 		}
 	}
-
+	
+	// 게임의 스피드 업
 	private void upSpeedLevel() {
 		if (mSpeedLevel < Constant.MAX_SPEED_LEVEL) {
 			mSpeedLevel++;
@@ -303,7 +304,7 @@ public class TetrisManager {
 			}
 		}
 	}
-
+	// 게임에서 한줄이 다 채워지면 지워지고 라인 수 증가 및 점수 증가
 	private void deleteLines(ArrayList<Integer> indexes) {
 		int k = BOARD_ROW_SIZE - 2;
 		Constant.BoardType[][] temp = new Constant.BoardType[BOARD_ROW_SIZE][BOARD_COL_SIZE];
