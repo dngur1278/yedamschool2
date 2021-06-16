@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import game.dao.RankDao;
+import game.dao.RankData;
 import game.tetris.view.SpeedLevelView;
 import game.tetris.view.TetrisView;
 
@@ -19,6 +22,8 @@ public class Start extends JFrame  {
 	JFrame frm;
 	JLabel lb1;
 	SpeedLevelView speedLevelView = new SpeedLevelView();
+	RankDao rankDao = new RankDao();
+	
 	
 	public Start() {		
 		frm = new JFrame();					// 프레임 생성
@@ -52,12 +57,12 @@ public class Start extends JFrame  {
 		// Game Setting버튼 눌렀을 때
 		b1.addActionListener(event -> {
 			speedLevelView.setVisible(true);
-			
 		});
 		
 		// Game Rank버튼 눌렀을 때
 		b2.addActionListener(event ->{
-			new Rank(null);
+			ArrayList<RankData> list = rankDao.Rank();
+			new Rank(list);
 		});
 		
 		// Game Exit버튼 눌렀을 때

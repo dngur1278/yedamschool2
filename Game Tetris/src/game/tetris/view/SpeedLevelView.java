@@ -29,14 +29,16 @@ public class SpeedLevelView extends JDialog{
 		setEvents();
 	}
 	
+	// 화면 설정!!
 	private void initWholeSetting() {
 		setTitle("TETRIS - START");
 		getContentPane().setLayout(null);
 		setSize(300, 300);
-		setLocation(TetrisUtil.getCenterPosition(this));
-		setResizable(false);
+		setLocation(TetrisUtil.getCenterPosition(this)); // setLocation으로 컴포넌트 위치 지정
+		setResizable(false); // 창크기 고정
 	}
 	
+	// 화면안에 들어갈 라벨, 슬라이더, 버튼 설정
 	private void initMembers() {
 		Font font = new Font("Aharoni 굵게", Font.BOLD, 20);
 		setSpeedLevel = new JLabel("Set speed Level", SwingConstants.CENTER);
@@ -45,13 +47,13 @@ public class SpeedLevelView extends JDialog{
 		
 		getContentPane().add(setSpeedLevel);
 		speedLevel = new JSlider();
-		speedLevel.setMajorTickSpacing(1);
-		speedLevel.setPaintLabels(true);
-		speedLevel.setPaintTicks(true);
-		speedLevel.setPaintTrack(false);
-		speedLevel.setValue(1);
-		speedLevel.setMinimum(1);
-		speedLevel.setMaximum(10);
+		speedLevel.setMajorTickSpacing(1);	// 큰 눈금의 크기 설정
+		speedLevel.setPaintLabels(true);	// 슬라이더의 라벨 보여주기(t/f)
+		speedLevel.setPaintTicks(true);		// 슬라이더의 눈금 보여주기(t/f)
+		speedLevel.setPaintTrack(false);	// 슬라이더의 트랙 보여주기(t/f)
+		speedLevel.setValue(1);	
+		speedLevel.setMinimum(1);		// 슬라이더의 Minimum 설정
+		speedLevel.setMaximum(10);		// 슬라이더의 Maximum 설정
 		speedLevel.setBounds(50, 50, 180, 62);
 		getContentPane().add(speedLevel);
 		jbStart = new JButton("GAME START");
@@ -59,18 +61,21 @@ public class SpeedLevelView extends JDialog{
 		getContentPane().add(jbStart);
 	}
 	
+	// 슬라이더의 눈금의 값을 int로 형변화해서 변수에 넣어준다
 	private void setEvents() {
 		speedLevel.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (!speedLevel.getValueIsAdjusting()) {
+					// getValue => 현재 슬라이더 값 반환
 					mSpeedLevel = (int) speedLevel.getValue();
 				}
 			}
 		});
 		
+		// 버튼으로 게임 실행 화면으로 전환
 		jbStart.addActionListener(event -> {
 			new TetrisView(mSpeedLevel).setVisible(true);
-			dispose();
+			dispose(); // 현재 프레임 종료
 		});
 	}
 }

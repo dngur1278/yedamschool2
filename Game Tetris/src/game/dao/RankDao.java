@@ -7,25 +7,37 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sun.tools.javac.Main;
+
 public class RankDao {
 	static PreparedStatement psmt;
 	static ResultSet rs;
 	static Connection conn;
 	
+	// 랭킹 출력!!! 
 	public ArrayList<RankData> Rank() {
 		ArrayList<RankData> rankList = new ArrayList<>();
 		connect();
-		String sql = "select * from rank";
+		String sql = "select * from rank order by score desc";
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
-			
-			if (rs.next()) {
+
+			int rank = 0;
+			while (rs.next()) {
+				rank++;
 				RankData rankData = new RankData();
 				rankData.setName(rs.getString("name"));
 				rankData.setScore(rs.getInt("score"));
-				
+				rankData.setRank(rank);
+
 				rankList.add(rankData);
+				
+				if (rankList.size() == 10) {
+					break;
+				} else {
+					continue;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -33,9 +45,10 @@ public class RankDao {
 			close();
 		}
 		return rankList;
-		
+
 	}
 	
+	// 점수와 이름을 등록
 	public static void insertRank(String name, int score) {
 		connect();
 		String sql = "insert into rank values(?, ?) ";
@@ -50,9 +63,9 @@ public class RankDao {
 			close();
 		}
 	}
-	
+
 	public static void connect() {
-		String url = "jdbc:sqlite:C:/sqlite/db/sample.db";
+		String url = "jdbc:sqlite:C:\\Users\\admin\\git\\yedamschool2\\Game Tetris\\src\\game\\db\\sample.db";
 		try {
 			conn = DriverManager.getConnection(url);
 

@@ -28,6 +28,7 @@ public class TetrisManager {
 	public TetrisManager(int speedLevel) {
 		mBoard = new Constant.BoardType[BOARD_ROW_SIZE][BOARD_COL_SIZE];
 		for (int i = 0; i < BOARD_ROW_SIZE; i++) {
+			// 전달받은 배열의 모든 요소를 설정한 값으로 초기화
 			Arrays.fill(mBoard[i], BoardType.EMPTY);
 		}
 		clearBoard();
@@ -330,7 +331,7 @@ public class TetrisManager {
 			}
 		}
 		mDeletedLineCount += indexes.size();
-		mScore = mDeletedLineCount*100*(mSpeedLevel+1);
+		mScore = mDeletedLineCount*100*(mSpeedLevel+1)+(10*(mSpeedLevel+1));
 	}
 	
 	public long getDownMilliSecond() {

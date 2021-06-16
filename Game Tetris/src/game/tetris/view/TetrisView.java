@@ -46,9 +46,10 @@ public class TetrisView extends JFrame{
 		setEvents();
 	}
 	
+	// 게임 사운드 반복
 	public void start() {
 		mSoundClip.start();
-		mSoundClip.loop(Clip.LOOP_CONTINUOUSLY);
+		mSoundClip.loop(Clip.LOOP_CONTINUOUSLY); // LOOP_CONTINUOUSLY = 무한반복
 		repaint();
 	}
 	
@@ -92,8 +93,6 @@ public class TetrisView extends JFrame{
 				, "TETRIS - END", JOptionPane.PLAIN_MESSAGE);
 		
 		String name = (String) JOptionPane.showInputDialog(this, "name", "랭킹등록", JOptionPane.PLAIN_MESSAGE);
-		System.out.println(name);
-		
 		rankDao.insertRank(name, score);
 		
 		dispose();
